@@ -6,25 +6,24 @@ from app.constants import FIELD_SIZE
 class GameOfLife:
     """Класс объекта игры."""
 
-    def __init__(
-        self, size: int = FIELD_SIZE, residents: tuple[int] | None = None
-    ) -> None:
+    def __init__(self, size: int = FIELD_SIZE) -> None:
         self.size: int = size
-        self.residents = residents
         self.field: list[list[int]] = self._init_field()
         self.is_game_over: bool = True
         self.prev_configs: dict[int, bool] = {}
 
-    def fill_field(self, residents: tuple[int]) -> list[list[int]]:
+    def fill_field(self, residents: set[tuple[int]]) -> list[list[int]]:
         field = [[0] * 50 for _ in range(50)]
         for t in residents:
             i, j = t
             field[i][j] = 1
         return field
 
-    def _init_field(self) -> list[list[int]]:
+    def _init_field(
+        self, residents: set[tuple[int]] | None = None
+    ) -> list[list[int]]:
         """Создаёт игровое поле с рандомным расположение живых клеток."""
-        if self.residents is None:
+        if residents is None:
             return [
                 [randint(0, 1) for _ in range(self.size)]
                 for _ in range(self.size)
@@ -38,6 +37,12 @@ class GameOfLife:
             for cell in row:
                 mask = (mask << 1) | cell
         return mask
+
+    def fill_field_with_new_residents(
+        self, residents: set[tuple[int]] | None = None
+    ):
+        """Заполняет поле игры новыми жителями."""
+        self.field = self._init_field(residents=residents)
 
     def update_field(self) -> list[list[int]]:
         """Обновление поля согласно правила игры."""

@@ -36,7 +36,7 @@ repos:
     hooks:
       - id: black
         language_version: python
-        exclude: /migrations/
+        exclude: front/
 
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0

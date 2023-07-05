@@ -17,6 +17,13 @@ app.add_middleware(
 game_field = GameOfLife()
 
 
+@app.post('/new_game')
+def new_game(residents: set[tuple[int]] | None = None) -> dict[str, str]:
+    """Инициализирует новое поле."""
+    game_field.fill_field_with_new_residents(residents=residents)
+    return {'status': 'OK'}
+
+
 @app.get('/game_of_life')
 def game_of_life() -> list[list[int]]:
     """Возвращает обновлённый результат поля игры."""
