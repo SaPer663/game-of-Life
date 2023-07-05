@@ -7,11 +7,11 @@ ARG BUILD_ENVIRONMENT=production
 RUN apt-get update && apt-get install --no-install-recommends -y \
   build-essential \
   libpq-dev
-COPY ./requirements.txt .
+COPY ./requirements/base.txt .
 
 
 RUN pip wheel --wheel-dir /usr/src/app/wheels  \
-  -r requirements.txt
+  -r base.txt
 
 
 FROM python as python-run-stage
