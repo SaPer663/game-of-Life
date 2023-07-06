@@ -12,15 +12,15 @@ class GameOfLife:
         self.is_game_over: bool = True
         self.prev_configs: dict[int, bool] = {}
 
-    def fill_field(self, residents: set[tuple[int]]) -> list[list[int]]:
-        field = [[0] * 50 for _ in range(50)]
+    def fill_field(self, residents: set[tuple[int, int]]) -> list[list[int]]:
+        field = [[0] * FIELD_SIZE for _ in range(FIELD_SIZE)]
         for t in residents:
             i, j = t
             field[i][j] = 1
         return field
 
     def _init_field(
-        self, residents: set[tuple[int]] | None = None
+        self, residents: set[tuple[int, int]] | None = None
     ) -> list[list[int]]:
         """Создаёт игровое поле с рандомным расположение живых клеток."""
         if residents is None:
@@ -28,7 +28,7 @@ class GameOfLife:
                 [randint(0, 1) for _ in range(self.size)]
                 for _ in range(self.size)
             ]
-        return self.fill_field()
+        return self.fill_field(residents=residents)
 
     def _get_mask(self) -> int:
         """Возвращает битовую маску текущего поля."""
@@ -39,7 +39,7 @@ class GameOfLife:
         return mask
 
     def fill_field_with_new_residents(
-        self, residents: set[tuple[int]] | None = None
+        self, residents: set[tuple[int, int]] | None = None
     ):
         """Заполняет поле игры новыми жителями."""
         self.field = self._init_field(residents=residents)
